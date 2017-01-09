@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+<!--<![endif]-->
+
+<head>
+
+    <!-- Meta-Information -->
+    <title>My Code Test</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="description" content="ACME Inc.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Vendor CSS Styles -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.min.css" />
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    
+    <!-- Application CSS Styles -->
+    <link rel="stylesheet" href="css/main.css">
+
+</head>
+
+<body ng-app="app">
+    <!--[if lt IE 7]>
+		<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgradeyour browser</a> to improve your experience.</p>
+	<![endif]-->
+
+    <div class="row">
+
+        <!-- Our Website Content Goes Here -->
+        <div class="col-sm-6 chartPanel" ng-controller=LineReportCtrl ng-init='reportType = "true"'>
+
+			<!--  -->
+        	<fieldset class="row fieldsetPosition">
+        		<legend>Chart Types :</legend>
+            	<input id="slcRadio" type="radio" name='reportTypeGroup' ng-change="selectedChart = null" ng-model="reportType" value="true"> &nbsp;<label for="slcRadio">Single Line</label> &nbsp;&nbsp;
+            	<input id="mlcRadio" type="radio" name='reportTypeGroup' ng-change="selectedChart = null" ng-model="reportType" value="false"> &nbsp;<label for="mlcRadio">Multi Line</label> &nbsp;&nbsp; 
+				
+				<div class="btn-group" ng-show='reportType === "true"' uib-dropdown >
+  					<button id="single-button" type="button" class="btn btn-primary" uib-dropdown-toggle ng-disabled="disabled" ng-bind="selectedChart.key || 'Chart Type'"> 
+  					<span class="caret"></span></button>
+  					<ul class="uib-dropdown-menu dropdown-menu" role="menu">
+    					<li role="menuitem">
+      						<a href="#" ng-click="chartSelectionChange(action);printReport();" ng-repeat="action in chartTypes">{{action.key}}</a>
+    					</li>
+  					</ul>
+				</div>
+				
+				<div class="btn-group" ng-hide='reportType === "true"' uib-dropdown >
+  					<button id="multi-button" type="button" class="btn btn-primary" uib-dropdown-toggle ng-disabled="disabled" ng-bind="selectedChart.key || 'Chart Type'">
+  					<span class="caret"></span></button>
+  					<ul class="uib-dropdown-menu dropdown-menu" role="menu">
+    					<li role="menuitem">
+      						<a href="#" ng-click="chartSelectionChange(action);printReport();" ng-repeat="action in multiChartTypes">{{action.key}}</a>
+    					</li>
+  					</ul>
+				</div>			
+			</fieldset>
+
+
+			<fieldset class="row fieldsetPosition">
+				<legend>Server Types :</legend>
+            	
+            	<div class="btn-group"  uib-dropdown >
+  					<button id="server report" type="button" class="btn btn-primary" uib-dropdown-toggle ng-disabled="disabled" ng-bind='selectedServer || "Server List"'><span class="caret"></span></button>
+  					<ul class="uib-dropdown-menu dropdown-menu" role="menu">
+    					<li role="menuitem">
+      						<a href="#" ng-click="severSelection(report);printReport();" ng-repeat="report in reportList">{{report}}</a>
+    					</li>
+  					</ul>
+				</div>
+			</fieldset>
+			
+			
+            <fieldset class="row fieldsetPosition">
+            	<legend>Date range</legend>
+            
+                <div class="col-sm-5">
+                    <input type="text" class="datepicker" placeholder="Start Date" name="startDate" ng-model="fromDate" ng-focus="startOpened = true" is-open="startOpened" uib-datepicker-popup="{{format}}" datepicker-options="startDateOptions" ng-change="changeFromMinAndMaxDates(); printReport();" required/>
+                </div>
+                <div class="col-sm-5">
+                    <input type="text" class="datepicker" placeholder="End Date" name="endDate" ng-model="toDate" ng-focus="endOpened = true" is-open="endOpened" uib-datepicker-popup="{{format}}" datepicker-options="endDateOptions" ng-change="changeToMinAndMaxDates();printReport()" required/>
+                </div>
+            </fieldset>
+       		
+       		<div class="singleChartPanel">
+            	<nvd3 options="lineChartOptions" data="lineChartData" class="with-3d-shadow with-transitions"></nvd3>
+            </div>
+        </div>
+
+        <div class="col-sm-6 chartPanel no-border" ng-controller=RealtimeReportCtrl>
+            <p class='liveReportPara'>Server live CUP usage report generated on every 1 second time interval.</p>
+            
+            <p> Click below button to toggle the start, stop report generation</p>
+            
+            <button ng-click="run=!run">Start / Stop</button>
+            
+            <div class="liveChartPanel">
+            	<nvd3 options="realtimeChartOptions" data="realtimeChartData"></nvd3>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+
+<!-- Vendor: JavaScripts -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular-mocks.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.7/angular-route.js"></script>
+<script src="http://code.angularjs.org/1.0.3/angular-resource.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-nvd3/1.0.5/angular-nvd3.min.js"></script>
+<script src="https://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.4.0.js"></script>
+
+<!-- Application JavaScripts -->
+<script src="js/main.js"></script>
+<script src="js/controller/line-report-ctrl.js"></script>
+<script src="js/controller/realtime-report-ctrl.js"></script>
+<script src="js/service/mock-server-srvc.js"></script>
+<script src="js/service/report-srvc.js"></script>
+
+
+</html>

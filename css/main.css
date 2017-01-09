@@ -1,0 +1,74 @@
+/* 
+Custom CSS for...
+'Modern Business' HTML Theme by Start Bootstrap
+
+All Start Bootstrap themes are licensed under Apache 2.0. 
+For more info and more free Bootstrap 3 HTML themes, visit http://startbootstrap.com!
+*/
+
+/* Global Styles */
+html, body {
+	height: 100%;
+}
+
+body {
+	padding: 10px 25px;
+}
+
+.dropdown {
+	cursor: pointer;
+}
+
+.chartPanel {
+	width: 50%;
+	float: left;
+	height: 680px;
+	padding: 0 15px;
+	border: solid 1px #cccccc;
+	border-left-width: 0;
+	border-top-width: 0;
+	border-bottom-width: 0;
+}
+
+.no-border{
+	border-width: 0
+}
+
+.singleChartPanel, .liveChartPanel {
+	padding: 5px;
+	border-radius: 5px;
+	border: solid 1px #cccccc;
+	margin-top: 20px;
+	height: 440px;
+}
+
+.fieldsetPosition {
+	padding: 5px 10px;
+	margin-top: 15px;
+}
+
+.liveReportPara{
+	margin-top: 35px;
+    margin-bottom: 40px;
+}
+
+.btn .caret{
+	margin-left: 6px;
+}
+
+legend {
+	font-size: 14px;
+	margin-bottom: 0px;
+	margin-top: 5px;
+	font-style: italic;
+	font-weight: bold;
+}
+
+label {
+	font-weight: normal;
+	font-size: 12px;
+}
+
+.h4{
+	font-size: 16px;
+}
